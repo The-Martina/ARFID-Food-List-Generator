@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARFID Safe Foods List</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-dark);">
+        <div class="container">
+            <a class="navbar-brand" href="/">ARFID List Generator</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/preview">My list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://en.wikipedia.org/wiki/Avoidant/restrictive_food_intake_disorder">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="page-header text-center">
+        <div class="container">
+            <h1 class="mb-3 display-4">My Safe Foods List</h1>
+            <p class="lead">Create your personalized list of foods for ARFID management</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="app-description mb-4" data-aos="fade-up">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <h2 class="text-center mb-3"><i class="fas fa-info-circle me-2"></i>About This Tool</h2>
+                    <p>This application was designed specifically for people with <strong>Avoidant/Restrictive Food Intake Disorder (ARFID)</strong> to help them identify, organize, and document their safe foods.</p>
+                    <p>Living with ARFID can make it challenging to maintain a varied diet. This tool allows you to:</p>
+                    <div class="row mt-3">
+                        <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="100">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0 text-center me-3">
+                                    <i class="fas fa-clipboard-list fa-2x" style="color: var(--accent);"></i>
+                                </div>
+                                <div>
+                                    <h5>Create a List</h5>
+                                    <p class="small">Select foods from different categories that you feel comfortable eating.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="200">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0 text-center me-3">
+                                    <i class="fas fa-pen-fancy fa-2x" style="color: var(--accent);"></i>
+                                </div>
+                                <div>
+                                    <h5>Add Details</h5>
+                                    <p class="small">Include specific brands you prefer and personal notes about each food.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="300">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0 text-center me-3">
+                                    <i class="fas fa-download fa-2x" style="color: var(--accent);"></i>
+                                </div>
+                                <div>
+                                    <h5>Download & Share</h5>
+                                    <p class="small">Export your list as a PDF or image to share with healthcare providers or keep for reference.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <main id="food-selection">
+            <div class="row">
+                <div class="col-lg-8 mx-auto mb-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                        <div class="input-group mb-2 mb-md-0" data-aos="fade-right">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" id="food-search" class="form-control" placeholder="Search foods...">
+                        </div>
+                        
+                        <div class="d-flex align-items-center" data-aos="fade-left">
+                            <span class="badge bg-primary rounded-pill me-2 animate-pulse" id="selected-counter">0</span>
+                            <span>foods selected</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Filter Controls -->
+                    <div class="category-filter-container" data-aos="fade-up">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">Filter by Category:</h5>
+                            <button id="show-all-categories" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-redo-alt me-1"></i> Show All
+                            </button>
+                        </div>
+                        <div class="category-filter-buttons d-flex flex-wrap gap-2 mb-3" id="category-filters">
+                            <!-- Category filter buttons will be added here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Food list will be populated here -->
+                    <div id="food-list-container" class="content-section" data-aos="fade-up">
+                        <!-- Food categories and items will be added by JavaScript -->
+                    </div>
+                    
+                    <div class="d-grid gap-2 col-md-6 mx-auto mt-4 mb-5" data-aos="zoom-in">
+                        <button id="go-to-preview" class="btn btn-primary btn-lg disabled" disabled>
+                            <i class="fas fa-arrow-right me-2"></i> Continue to Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Creator info -->
+        <div class="creator-info" data-aos="fade-up">
+            <p>Created with ❤️ by <a href="https://www.instagram.com/the_martina__/" target="_blank" rel="noopener"><i class="fab fa-instagram me-1"></i>The_Martina</a></p>
+            <p class="small text-muted">This tool is designed to support individuals with ARFID and is not a substitute for professional medical advice.</p>
+        </div>
+    </div>
+    
+    <footer class="py-3 mt-5" style="background-color: var(--primary-dark); border-top: 1px solid var(--primary-light);">
+        <div class="container text-center">
+            <small>ARFID Safe Foods List Creator &copy; 2025</small>
+        </div>
+    </footer>
+    
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/3d5c66a6cc.js" crossorigin="anonymous"></script>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Application JavaScript -->
+    <script src="{{ url_for('static', filename='js/food-data.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+</body>
+</html>
